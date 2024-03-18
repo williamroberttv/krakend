@@ -1,0 +1,37 @@
+
+{
+  "version": 3,
+  "name": "Krakend API Gateway",
+  "endpoints": [
+      {
+          "endpoint": "/test/list",
+          "method": "GET",
+          "output_encoding": "no-op",
+          "extra_config": { 
+            "qos/ratelimit/router": {
+              "max_rate": 50,
+              "capacity": 50,
+              "client_max_rate": 5,
+              "client_capacity": 5,
+              "every": "10m",
+              "strategy": "ip"
+          }
+        },
+          "backend": [
+              {
+                  "url_pattern": "/list",
+                  "encoding": "no-op",
+                  "sd": "static",
+                  "method": "GET",
+                  "extra_config": {
+                   
+                  },
+                  "host": [
+                      "http://host.docker.internal:5000"
+                  ],
+                  "disable_host_sanitize": true
+              }
+          ]
+      }
+  ]
+}
